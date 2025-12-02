@@ -23,14 +23,19 @@
       :root {
         --bg-dark: #050505; /* Almost black */
         --bg-card: #121212; /* Dark Grey for cards */
-        --neon-green: #39ff14; /* Matches your photo lighting */
-        --neon-cyan: #00ffff; /* Secondary accent */
+        --neon-green: #3c68f7; /* Matches your photo lighting */
+        --neon-cyan: #06f8f8; /* Secondary accent */
         --text-white: #ffffff;
         --text-gray: #b3b3b3;
       }
 
       body {
-        background-color: var(--bg-dark);
+        /* UPDATED: Subtle Circuit Board Pattern Background */
+        background-color: var(--bg-dark); /* Fallback to almost black */
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 0 100 L 0 0 L 100 0 Z" fill="none" stroke="#1a1a1a" stroke-width="0.5"/><path d="M 100 0 L 100 100 L 0 100 Z" fill="none" stroke="#1a1a1a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(%23p)" /></svg>');
+        background-size: 100px 100px;
+        background-repeat: repeat;
+
         color: var(--text-white);
         font-family: "Poppins", sans-serif;
         overflow-x: hidden;
@@ -43,7 +48,7 @@
         font-family: "Orbitron", sans-serif; /* Futuristic font */
       }
 
-      /* --- 2. GLOW EFFECTS --- */
+      /* --- 2. GLOW EFFECTS & TYPING --- */
       .glow-text {
         color: var(--text-white);
         text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
@@ -59,18 +64,15 @@
         box-shadow: 0 0 15px var(--neon-green);
       }
 
-      /* --- 2.1. TYPING EFFECT STYLES (NEW) --- */
       #typewriter-text {
         border-right: 2px solid var(--neon-green); /* The blinking cursor */
-        white-space: nowrap; /* Prevents text from wrapping */
-        overflow: hidden; /* Ensures text is hidden until typed */
-        display: inline-block; /* Essential for border-right (cursor) to work */
-        padding-right: 5px; /* Space between text and cursor */
-        /* Add blinking animation for the cursor */
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+        padding-right: 5px;
         animation: blink-caret 0.75s step-end infinite;
       }
 
-      /* Keyframes for the Blinking Cursor (NEW) */
       @keyframes blink-caret {
         from,
         to {
@@ -98,53 +100,54 @@
         text-shadow: 0 0 8px var(--neon-green);
       }
 
-      /* --- 4. HERO SECTION (New Layout) --- */
+      /* --- 4. HERO SECTION (NEW RESPONSIVE LAYOUT) --- */
       .hero-section {
         min-height: 100vh;
-        position: relative;
         display: flex;
         align-items: center;
-        padding-top: 60px; /* Space for fixed navbar */
-        overflow: hidden; /* Hide overflow from floating icons */
-      }
-
-      .hero-content {
-        z-index: 2; /* Ensure content is above icons */
-        text-align: left; /* Align text to the left */
-      }
-
-      .profile-img-left {
-        position: absolute; /* Position the image absolutely */
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%); /* Vertically center the image */
-        width: 500px; /* Adjust width as desired to show more of the image */
-        height: auto; /* Maintain aspect ratio */
-        object-fit: cover; /* Cover the area, but without cropping to circle */
-        opacity: 0.8; /* Slightly transparent to blend with background */
-        filter: brightness(0.8) drop-shadow(0 0 30px rgba(57, 255, 20, 0.4)); /* Subtle glow and slightly darker */
-        z-index: 1; /* Behind text, but above background icons */
-        mix-blend-mode: screen; /* This blend mode often works well for dark images on dark backgrounds */
-      }
-
-      /* Adjust content positioning so it doesn't overlap with the image */
-      .hero-section .container {
+        padding-top: 80px;
         position: relative;
-        z-index: 3; /* Ensure text is above image and icons */
-        padding-left: 350px; /* Push content to the right to clear the image */
       }
 
-      /* Floating Icons Styling (positioned relative to hero-section) */
+      /* Desktop: Image is a centered block with glow */
+      .profile-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px; /* Slight rounding */
+        filter: drop-shadow(0 0 15px rgba(10, 10, 10, 0.5));
+      }
+
+      /* Mobile: Center the content */
+      @media (max-width: 991.98px) {
+        .hero-section {
+          min-height: auto;
+          padding: 100px 0 60px 0;
+        }
+        .hero-content {
+          text-align: center;
+        }
+        .profile-img {
+          margin: 0 auto 30px auto; /* Center image and add bottom spacing */
+          max-width: 300px;
+        }
+      }
+
+      /* Floating Icons Styling (only visible on large screens) */
       .orbit-icon {
         position: absolute;
-        font-size: 3rem; /* Slightly larger icons */
+        font-size: 3rem;
         color: var(--neon-cyan);
-        opacity: 0.6; /* Slightly transparent */
-        filter: drop-shadow(
-          0 0 8px var(--neon-cyan)
-        ); /* More pronounced glow */
-        animation: float 5s ease-in-out infinite; /* Slower float */
-        z-index: 1; /* Behind content */
+        opacity: 0.6;
+        filter: drop-shadow(0 0 8px var(--neon-cyan));
+        animation: float 5s ease-in-out infinite;
+        z-index: 1;
+        display: none; /* Hidden by default */
+      }
+
+      @media (min-width: 992px) {
+        .orbit-icon {
+          display: block; /* Visible on desktop */
+        }
       }
 
       /* Positioning the icons - concentrated on the right */
@@ -207,53 +210,13 @@
         }
         50% {
           transform: translateY(-25px) rotate(5deg);
-        } /* More movement */
+        }
         100% {
           transform: translateY(0px) rotate(0deg);
         }
       }
 
-      /* Mobile Adjustments for Hero */
-      @media (max-width: 992px) {
-        /* Adjust breakpoint for larger tablets too */
-        .hero-section {
-          flex-direction: column; /* Stack image and text */
-          text-align: center; /* Center text on smaller screens */
-          justify-content: center;
-        }
-        .profile-img-left {
-          position: relative; /* Make image flow with content */
-          transform: none; /* Remove vertical centering transform */
-          width: 100%; /* Take full width */
-          max-width: 400px; /* Limit max width */
-          margin-bottom: 30px; /* Space below image */
-          margin-left: auto;
-          margin-right: auto;
-          opacity: 1; /* Less transparency on mobile */
-          filter: none; /* Remove blend mode and filter on mobile for clarity */
-        }
-        .hero-section .container {
-          padding-left: 15px; /* Reset padding for mobile */
-          padding-right: 15px;
-        }
-        .orbit-icon {
-          display: none; /* Hide floating icons on mobile for cleanliness */
-        }
-        .hero-content h1 {
-          font-size: 2.5rem;
-        }
-        .hero-content p {
-          font-size: 1rem;
-        }
-      }
-      @media (max-width: 576px) {
-        .profile-img-left {
-          width: 100%;
-          max-width: 300px;
-        }
-      }
-
-      /* --- 5. SECTIONS GENERAL --- */
+      /* --- 5. SECTIONS GENERAL (Minor cleanup) --- */
       .section-padding {
         padding: 80px 0;
       }
@@ -270,8 +233,9 @@
 
       /* --- 6. CARDS (Projects & Certs) --- */
       .custom-card {
-        background-color: var(--bg-card);
-        border: 1 * px solid #333;
+        /* UPDATED: Slight transparency to show background pattern */
+        background-color: rgba(18, 18, 18, 0.9);
+        border: 1px solid #333;
         border-radius: 10px;
         padding: 25px;
         height: 100%;
@@ -281,7 +245,7 @@
       .custom-card:hover {
         transform: translateY(-5px);
         border-color: var(--neon-green);
-        box-shadow: 0 5px 15px rgba(57, 255, 20, 0.2);
+        box-shadow: 0 5px 15px rgba(230, 233, 230, 0.2);
       }
 
       .tech-badge {
@@ -325,8 +289,6 @@
         color: var(--neon-green);
         transform: scale(1.2);
       }
-
-      /* New style for contact details list in footer */
       .contact-list {
         list-style: none;
         padding: 0;
@@ -340,7 +302,7 @@
         color: var(--text-gray);
       }
       .contact-list li i {
-        width: 25px; /* Fixed width for alignment */
+        width: 25px;
         color: var(--neon-cyan);
       }
     </style>
@@ -389,241 +351,252 @@
       </div>
     </nav>
 
-    <section class="hero-section">
-      <i class="fab fa-python orbit-icon icon-python"></i>
-      <i class="fas fa-database orbit-icon icon-db"></i>
-      <i class="fas fa-brain orbit-icon icon-ai"></i>
-      <i class="fas fa-code orbit-icon icon-code"></i>
-      <i class="fas fa-shopping-cart orbit-icon icon-cart"></i>
-      <i class="fas fa-shield-alt orbit-icon icon-security"></i>
-      <i class="fas fa-flask orbit-icon icon-flask"></i>
-      <i class="fab fa-html5 orbit-icon icon-html"></i>
+    <main>
+      <section class="hero-section">
+        <i class="fab fa-python orbit-icon icon-python"></i>
+        <i class="fas fa-database orbit-icon icon-db"></i>
+        <i class="fas fa-brain orbit-icon icon-ai"></i>
+        <i class="fas fa-code orbit-icon icon-code"></i>
+        <i class="fas fa-shopping-cart orbit-icon icon-cart"></i>
+        <i class="fas fa-shield-alt orbit-icon icon-security"></i>
+        <i class="fas fa-flask orbit-icon icon-flask"></i>
+        <i class="fab fa-html5 orbit-icon icon-html"></i>
 
-      <div class="container d-flex align-items-center">
-        <img
-          src="..\my portfolio\image\sanjay with laptop.jpg"
-          alt="Sanjay S.A Professional Profile"
-          class="profile-img-left d-none d-lg-block"
-        />
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-5 text-center order-lg-1 mb-4 mb-lg-0">
+              <img
+                src="..\my portfolio\image\sanjay with lt.jpg"
+                alt="Sanjay S.A Professional Profile"
+                class="profile-img"
+              />
+            </div>
 
-        <div class="hero-content">
-          <p class="h4 text-light mb-2">Hello, I'm</p>
-          <h1 class="display-3 fw-bold glow-text mb-3">SANJAY.S.A</h1>
-          <h2 class="lead text-light mb-4">
-            <span id="typewriter-text"></span>
+            <div class="col-lg-7 order-lg-0">
+              <div class="hero-content">
+                <p class="h4 text-light mb-2">Hello, I'm</p>
+                <h1 class="display-3 fw-bold glow-text mb-3">SANJAY.S.A</h1>
+                <h2 class="lead text-light mb-4">
+                  <span id="typewriter-text"></span>
+                </h2>
+
+                <a href="#projects" class="btn btn-neon me-2">View Work</a>
+                <a href="#contact" class="btn btn-outline-light">Contact Me</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="section-padding">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-5 mb-4" id="about">
+              <h2 class="glow-text mb-3">About Me</h2>
+              <p class="text-gray">
+                I am a passionate developer bridging the gap between Fullstack
+                Engineering and Artificial Intelligence. With a B.Sc. in
+                Computer Science and specialized training in AI/DS, I build
+                intelligent systems that solve real-world problems.
+              </p>
+              <p class="text-white">
+                <strong>Education:</strong> BSc. Computer Science
+              </p>
+            </div>
+            <div class="col-lg-7">
+              <h2 class="glow-text mb-4">Technical Arsenal</h2>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <i class="fab fa-python text-warning me-2"></i> Python
+                  Fullstack
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fas fa-brain" style="color: var(--neon-green)"></i>
+                  AI Development
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fab fa-html5 text-danger me-2"></i> HTML5 & CSS3
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fas fa-flask text-white me-2"></i> Flask Framework
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fas fa-database text-primary me-2"></i> MySQL & Data
+                  Analytics
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fab fa-bootstrap text-info me-2"></i> Bootstrap
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fas fa-shield-alt text-danger me-2"></i> Cyber
+                  Security
+                </div>
+                <div class="col-md-6 mb-3">
+                  <i class="fas fa-chart-line text-info me-2"></i> Digital
+                  Marketing
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section-padding bg-darker">
+        <div class="container">
+          <h2 class="section-title glow-text">
+            <span>Featured Projects</span>
           </h2>
-
-          <a href="#projects" class="btn btn-neon me-2">View Work</a>
-          <a href="#contact" class="btn btn-outline-light">Contact Me</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="section-padding">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-5 mb-4">
-            <h2 class="glow-text mb-3">About Me</h2>
-            <p class="text-gray">
-              I am a passionate developer bridging the gap between Fullstack
-              Engineering and Artificial Intelligence. With a B.Sc. in Computer
-              Science and specialized training in AI/DS, I build intelligent
-              systems that solve real-world problems.
-            </p>
-            <p class="text-white">
-              <strong>Education:</strong> BSc. Computer Science
-            </p>
-          </div>
-          <div class="col-lg-7">
-            <h2 class="glow-text mb-4">Technical Arsenal</h2>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <i class="fab fa-python text-warning me-2"></i> Python Fullstack
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fas fa-brain" style="color: var(--neon-green)"></i> AI
-                Development
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fab fa-html5 text-danger me-2"></i> HTML5 & CSS3
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fas fa-flask text-white me-2"></i> Flask Framework
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fas fa-database text-primary me-2"></i> MySQL & Data
-                Analytics
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fab fa-bootstrap text-info me-2"></i> Bootstrap
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fas fa-shield-alt text-danger me-2"></i> Cyber
-                Security
-              </div>
-              <div class="col-md-6 mb-3">
-                <i class="fas fa-chart-line text-info me-2"></i> Digital
-                Marketing
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="custom-card">
+                <h4 class="text-white">E-commerce with AI Features</h4>
+                <p class="text-gray small">
+                  A robust shopping platform integrated with AI features for
+                  enhanced user experience and personalized recommendations.
+                </p>
+                <div class="mb-3">
+                  <span class="tech-badge">Python</span>
+                  <span class="tech-badge">Flask</span>
+                  <span class="tech-badge">AI/ML</span>
+                  <span class="tech-badge">E-commerce</span>
+                </div>
+                <a
+                  href="https://9000-firebase-studio-1763733993019.cluster-fdkw7vjj7bgguspe3fbbc25tra.cloudworkstations.dev/"
+                  target="_blank"
+                  class="btn-neon btn-sm"
+                  >View Github</a
+                >
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="projects" class="section-padding bg-darker">
-      <div class="container">
-        <h2 class="section-title glow-text"><span>Featured Projects</span></h2>
-        <div class="row g-4">
-          <div class="col-lg-6">
-            <div class="custom-card">
-              <h4 class="text-white">E-commerce with AI Features</h4>
-              <p class="text-gray small">
-                A robust shopping platform integrated with AI features for
-                enhanced user experience and personalized recommendations.
-              </p>
-              <div class="mb-3">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">AI/ML</span>
-                <span class="tech-badge">E-commerce</span>
+            <div class="col-lg-6">
+              <div class="custom-card">
+                <h4 class="text-white">House Price Prediction Model</h4>
+                <p class="text-gray small">
+                  Machine Learning model to analyze and predict real estate
+                  market trends, providing accurate valuations.
+                </p>
+                <div class="mb-3">
+                  <span class="tech-badge">ML</span>
+                  <span class="tech-badge">Pandas</span>
+                  <span class="tech-badge">Scikit-learn</span>
+                  <span class="tech-badge">Data Analysis</span>
+                </div>
+                <a
+                  href="https://sanjaiaiwizard.github.io/house-price-prediction-pro/my_flask_app2/templates/index.html"
+                  target="_blank"
+                  class="btn-neon btn-sm"
+                  >View Github</a
+                >
               </div>
-              <a
-                href="https://9000-firebase-studio-1763733993019.cluster-fdkw7vjj7bgguspe3fbbc25tra.cloudworkstations.dev/"
-                target="_blank"
-                class="btn-neon btn-sm"
-                >View Github</a
-              >
             </div>
-          </div>
 
-          <div class="col-lg-6">
-            <div class="custom-card">
-              <h4 class="text-white">House Price Prediction Model</h4>
-              <p class="text-gray small">
-                Machine Learning model to analyze and predict real estate market
-                trends, providing accurate valuations.
-              </p>
-              <div class="mb-3">
-                <span class="tech-badge">ML</span>
-                <span class="tech-badge">Pandas</span>
-                <span class="tech-badge">Scikit-learn</span>
-                <span class="tech-badge">Data Analysis</span>
+            <div class="col-lg-6">
+              <div class="custom-card">
+                <h4 class="text-white">Plant Disease Prediction System</h4>
+                <p class="text-gray small">
+                  Computer vision application utilizing deep learning to
+                  accurately identify various plant diseases from images.
+                </p>
+                <div class="mb-3">
+                  <span class="tech-badge">Deep Learning</span>
+                  <span class="tech-badge">CNN</span>
+                  <span class="tech-badge">Image Processing</span>
+                  <span class="tech-badge">Keras/TensorFlow</span>
+                </div>
+                <a
+                  href="https://9000-firebase-studio-1763985149460.cluster-zumahodzirciuujpqvsniawo3o.cloudworkstations.dev/"
+                  target="_blank"
+                  class="btn-neon btn-sm"
+                  >View Github</a
+                >
               </div>
-              <a
-                href="https://sanjaiaiwizard.github.io/house-price-prediction-pro/my_flask_app2/templates/index.html"
-                target="_blank"
-                class="btn-neon btn-sm"
-                >View Github</a
-              >
             </div>
-          </div>
 
-          <div class="col-lg-6">
-            <div class="custom-card">
-              <h4 class="text-white">Plant Disease Prediction System</h4>
-              <p class="text-gray small">
-                Computer vision application utilizing deep learning to
-                accurately identify various plant diseases from images.
-              </p>
-              <div class="mb-3">
-                <span class="tech-badge">Deep Learning</span>
-                <span class="tech-badge">CNN</span>
-                <span class="tech-badge">Image Processing</span>
-                <span class="tech-badge">Keras/TensorFlow</span>
+            <div class="col-lg-6">
+              <div class="custom-card">
+                <h4 class="text-white">Data Analytics and Visualization</h4>
+                <p class="text-gray small">
+                  Comprehensive data analysis project turning raw datasets into
+                  actionable insights through interactive visualizations.
+                </p>
+                <div class="mb-3">
+                  <span class="tech-badge">Data Science</span>
+                  <span class="tech-badge">Matplotlib</span>
+                  <span class="tech-badge">Seaborn</span>
+                  <span class="tech-badge">Pandas</span>
+                </div>
+                <a
+                  href="https://1drv.ms/x/c/5331ed519ca7e8c2/Ee-51PJChcFAj7XJuSfDIocBEVMHDqTF_0k2ihdKLRPgFg?e=HwzIGq"
+                  target="_blank"
+                  class="btn-neon btn-sm"
+                  >View Github</a
+                >
               </div>
-              <a
-                href="https://9000-firebase-studio-1763985149460.cluster-zumahodzirciuujpqvsniawo3o.cloudworkstations.dev/"
-                target="_blank"
-                class="btn-neon btn-sm"
-                >View Github</a
-              >
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="custom-card">
-              <h4 class="text-white">Data Analytics and Visualization</h4>
-              <p class="text-gray small">
-                Comprehensive data analysis project turning raw datasets into
-                actionable insights through interactive visualizations.
-              </p>
-              <div class="mb-3">
-                <span class="tech-badge">Data Science</span>
-                <span class="tech-badge">Matplotlib</span>
-                <span class="tech-badge">Seaborn</span>
-                <span class="tech-badge">Pandas</span>
-              </div>
-              <a
-                href="https://1drv.ms/x/c/5331ed519ca7e8c2/Ee-51PJChcFAj7XJuSfDIocBEVMHDqTF_0k2ihdKLRPgFg?e=HwzIGq"
-                target="_blank"
-                class="btn-neon btn-sm"
-                >View Github</a
-              >
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="certs" class="section-padding">
-      <div class="container">
-        <h2 class="section-title glow-text"><span>Certifications</span></h2>
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <ul class="list-group list-group-flush bg-transparent">
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fas fa-certificate text-warning me-3"></i>
-                <div>
-                  AI & Data Science - <strong>IPCS Global Coimbatore</strong>
-                </div>
-              </li>
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fab fa-google text-primary me-3"></i>
-                <div>Cyber Security - <strong>Google (Coursera)</strong></div>
-              </li>
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fas fa-university text-info me-3"></i>
-                <div>
-                  AI for Autonomous Vehicle and Robotics -
-                  <strong>Coursera (Michigan University)</strong>
-                </div>
-              </li>
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fab fa-google text-success me-3"></i>
-                <div>
-                  Digital Marketing and E-commerce -
-                  <strong>Coursera (Google)</strong>
-                </div>
-              </li>
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fas fa-atom text-danger me-3"></i>
-                <div>AI for Quantum Computing - <strong>Udemy</strong></div>
-              </li>
-              <li
-                class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
-              >
-                <i class="fas fa-project-diagram text-warning me-3"></i>
-                <div>
-                  Project Management for Professionals -
-                  <strong>Coursera (Google)</strong>
-                </div>
-              </li>
-            </ul>
+      <section id="certs" class="section-padding">
+        <div class="container">
+          <h2 class="section-title glow-text"><span>Certifications</span></h2>
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <ul class="list-group list-group-flush bg-transparent">
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fas fa-certificate text-warning me-3"></i>
+                  <div>
+                    AI & Data Science -
+                    <strong><a href="https://drive.google.com/file/d/1_dOrNtW5xvbmy0pkVPMCr-KOl6zQbUVO/view?usp=drive_link">IPCS Global Coimbatore</a></strong>
+                </li>
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fab fa-google text-primary me-3"></i>
+                  <div>Cyber Security - <strong><a href="https://drive.google.com/file/d/1vUUZHJJQbb00EitsFXYDEbyXyscf6Alj/view?usp=sharing">Google (Coursera)</a></strong></div>
+                </li>
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fas fa-university text-info me-3"></i>
+                  <div>
+                    AI for Autonomous Vehicle and Robotics -
+                    <strong><a href="https://drive.google.com/file/d/1n5XrvOqZ2HIqHBnqwhnVc6RBk_cec0Wk/view?usp=sharing">Coursera (Michigan University)</a></strong>
+                  </div>
+                </li>
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fab fa-google text-success me-3"></i>
+                  <div>
+                    Digital Marketing and E-commerce -
+                    <strong><a href="https://drive.google.com/file/d/14hBY7giw6ESbtZ8zgRIfqeMhaxd1bWLc/view?usp=sharing">Coursera (Google)</a></strong>
+                  </div>
+                </li>
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fas fa-atom text-danger me-3"></i>
+                  <div>AI for Quantum Computing - <strong><a href="https://drive.google.com/file/d/1n84vEXEeU2_RgB_DSOTbs7uzEpKRxv2-/view?usp=sharing">Udemy</a></strong></div>
+                </li>
+                <li
+                  class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center"
+                >
+                  <i class="fas fa-project-diagram text-warning me-3"></i>
+                  <div>
+                    Project Management
+                    <strong><a href="https://drive.google.com/file/d/1mBqywp7HX94RuYHc-gUW064VsPcFLwVb/view?usp=sharing">Coursera (Google)</a></strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <footer id="contact">
       <div class="container">
@@ -718,4 +691,3 @@
     </script>
   </body>
 </html>
-
